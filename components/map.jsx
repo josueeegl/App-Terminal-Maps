@@ -5,21 +5,22 @@ import MapViewDirections from "react-native-maps-directions";
 import { GOOGLE_MAPS_KEY } from "@env";
 import LottieView from "lottie-react-native";
 
-export const Maps = ({ origin, setOrigin, destination, setDestination }) => {
+export const Maps = ({
+  origin,
+  destination,
+  setDestination,
+  region,
+  setRegion,
+}) => {
   return (
     <MapView
       style={styles.mapa}
-      initialRegion={{
-        latitude: origin.latitude,
-        longitude: origin.longitude,
-        longitudeDelta: 0.04,
-        latitudeDelta: 0.04,
-      }}
+      onRegionChangeComplete={(x) => setRegion(x)}
+      region={region}
     >
       <Marker
-        coordinate={origin}
+        coordinate={{ latitude: origin.latitude, longitude: origin.longitude }}
         draggable
-        onDragEnd={(direction) => setOrigin(direction.nativeEvent.coordinate)}
       >
         <LottieView
           autoPlay={true}
@@ -42,13 +43,14 @@ export const Maps = ({ origin, setOrigin, destination, setDestination }) => {
           style={{ width: 70, height: 20 }}
         />
       </Marker>
-      <MapViewDirections
+
+      {/* <MapViewDirections
         origin={origin}
         destination={destination}
         apikey={GOOGLE_MAPS_KEY}
-        strokeColor={"rgba(0,0,0,0.5)"}
+        strokeColor={"#01A2FD"}
         strokeWidth={8}
-      />
+      /> */}
     </MapView>
   );
 };

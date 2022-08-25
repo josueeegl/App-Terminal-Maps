@@ -1,22 +1,20 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
   View,
   TextInput,
-  Keyboard,
   TouchableOpacity,
   FlatList,
-  BackHandler,
 } from "react-native";
 import { IconButton } from "react-native-paper";
 
-export const Searching = ({ data }) => {
+export const Searching = ({ data, visibility, setVisibility }) => {
   const [search, setSearch] = useState("");
-  const [visible, setVisible] = useState(false);
+
   return (
     <View style={styles(search).container}>
-      <View style={styles(visible).viewSearch}>
+      <View style={styles(search).viewSearch}>
         <TextInput
           style={styles(search).input}
           onChangeText={(text) => setSearch(text)}
@@ -24,8 +22,6 @@ export const Searching = ({ data }) => {
           placeholder="Buscar"
           placeholderTextColor={"white"}
           underlineColorAndroid="transparent"
-          onFocus={() => setVisible(true)}
-          onBlur={() => setVisible(false)}
         />
         <IconButton
           icon={search !== "" ? "backspace" : "text-search"}
@@ -33,12 +29,12 @@ export const Searching = ({ data }) => {
           size={30}
           style={{ bottom: 15 }}
           onPress={() => {
-            search !== "" ? setSearch("") : Keyboard.dismiss();
+            search !== "" ? setSearch("") : setVisibility(true);
           }}
         />
       </View>
 
-      {visible ? (
+      {search !== "" ? (
         <View style={styles(search).requests}>
           <FlatList
             style={styles(search).list}
@@ -46,7 +42,10 @@ export const Searching = ({ data }) => {
             keyExtractor={(x) => x.terminal}
             renderItem={({ item, index }) => {
               return (
-                <TouchableOpacity style={styles(search).touchable}>
+                <TouchableOpacity
+                  style={styles(search).touchable}
+                  onPress={() => console.log("Hola")}
+                >
                   <Text
                     style={{ fontSize: 18, fontWeight: "bold", color: "white" }}
                   >
@@ -67,7 +66,7 @@ const styles = (search) =>
     container: {
       position: "absolute",
       width: "100%",
-      top: 40,
+      top: 50,
       alignItems: "center",
       zIndex: 1,
     },
@@ -78,8 +77,8 @@ const styles = (search) =>
       padding: 15,
       borderTopLeftRadius: 25,
       borderTopRightRadius: 25,
-      borderBottomLeftRadius: search ? 0 : 25,
-      borderBottomRightRadius: search ? 0 : 25,
+      borderBottomLeftRadius: search == "" ? 25 : 0,
+      borderBottomRightRadius: search == "" ? 25 : 0,
       backgroundColor: "#393943",
     },
     list: {
