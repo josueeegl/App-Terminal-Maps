@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TextInput, Alert } from "react-native";
 import { obtener } from "../functions/location";
 import { Searching, Maps, ModalDirections } from "../components";
 import { IconButton } from "react-native-paper";
+import * as local from "expo-location";
 
 export const HomeScreen = ({ navigation }) => {
   const [visibility, setVisibility] = useState(false);
