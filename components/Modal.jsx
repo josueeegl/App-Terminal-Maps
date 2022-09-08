@@ -1,27 +1,25 @@
-import React, { useCallback, useRef, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  Image,
-  Modal,
-  TouchableOpacity,
-} from "react-native";
-import { IconButton } from "react-native-paper";
+import * as React from "react";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import { View, Text } from "react-native";
 
-const width = Dimensions.get("window").width;
-const height = Dimensions.get("window").height;
+export const Modal = ({ index, setIsOpen, item, sheetRef }) => {
+ 
+  const points = ["30%", "50%"];
 
-export const ModalDirections = ({ visibility, setVisibility }) => {
   return (
-    <Modal
-      onRequestClose={() => setVisibility(false)}
-      animationType="slide"
-      visible={visibility}
-      transparent={true}
-    >
-      <View style={{backgroundColor: "black", width: "100%", height: "100%"}}></View>
-    </Modal>
+      <BottomSheet
+        key={index}
+        ref={sheetRef}
+        snapPoints={points}
+        enablePanDownToClose={true}
+      onClose={() => setIsOpen(false)}
+      
+      >
+        <BottomSheetView>
+        <View style={{ background: "black" }}>
+          <Text>{item.terminal}</Text>
+          </View>
+        </BottomSheetView>
+      </BottomSheet>
   );
 };

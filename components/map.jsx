@@ -6,21 +6,22 @@ import { GOOGLE_MAPS_KEY } from "@env";
 import LottieView from "lottie-react-native";
 
 export const Maps = ({
-  origin,
-  destination,
-  setDestination,
-  region,
+  data,
   setRegion,
+  region,
+  UserLocation,
+  navigation,
+  ruta,
+  setRuta,
 }) => {
+  const [dest, setDest] = React.useState({});
   return (
-    <MapView
-      style={styles.mapa}
-      onRegionChangeComplete={(x) => setRegion(x)}
-      region={region}
-    >
+    <MapView rotateEnabled={true} style={styles.mapa} initialRegion={region} region={region}>
       <Marker
-        coordinate={{ latitude: origin.latitude, longitude: origin.longitude }}
-        draggable
+        coordinate={{
+          latitude: UserLocation.latitude,
+          longitude: UserLocation.longitude,
+        }}
       >
         <LottieView
           autoPlay={true}
@@ -29,28 +30,40 @@ export const Maps = ({
           style={{ width: 30, height: 50 }}
         />
       </Marker>
-      <Marker
-        coordinate={destination}
-        draggable
-        onDragEnd={(direction) =>
-          setDestination(direction.nativeEvent.coordinate)
-        }
-      >
-        <LottieView
-          source={require("../assets/icons/bus.json")}
-          autoPlay
-          loop
-          style={{ width: 70, height: 20 }}
+      {data.map((item, index) => {
+        return (
+          <Marker
+            coordinate={{
+              longitude: item.coordenadas.longitud,
+              latitude: item.coordenadas.latitud,
+            }}
+            key={index}
+            onPress={() => {
+              navigation.navigate("terminal", {
+                item: item,
+                setRuta: setRuta,
+                setDest: setDest,
+              });
+            }}
+          >
+            <LottieView
+              source={require("../assets/icons/bus.json")}
+              autoPlay
+              loop
+              style={{ width: 90, height: 20 }}
+            />
+          </Marker>
+        );
+      })}
+      {ruta ? (
+        <MapViewDirections
+          origin={UserLocation}
+          destination={dest}
+          apikey={GOOGLE_MAPS_KEY}
+          strokeColor={"#01A2FD"}
+          strokeWidth={8}          
         />
-      </Marker>
-
-      {/* <MapViewDirections
-        origin={origin}
-        destination={destination}
-        apikey={GOOGLE_MAPS_KEY}
-        strokeColor={"#01A2FD"}
-        strokeWidth={8}
-      /> */}
+      ) : null}
     </MapView>
   );
 };

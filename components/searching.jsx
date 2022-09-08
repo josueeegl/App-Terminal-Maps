@@ -5,19 +5,30 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  FlatList,
+  FlatList, Keyboard
 } from "react-native";
 import { IconButton } from "react-native-paper";
 
-export const Searching = ({ data, visibility, setVisibility }) => {
+export const Searching = ({ data, navigation }) => {
   const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState([]);
+
+  const searchFilter = (text) => {
+    setSearch(text);
+    if (text !== "") {
+      const newData = data.filter((x) => x.nombre.toUpperCase().indexOf(text.toUpperCase()) > -1);
+      setFilter(newData);
+    } else {
+      setFilter([]);
+    }
+  };
 
   return (
     <View style={styles(search).container}>
       <View style={styles(search).viewSearch}>
         <TextInput
           style={styles(search).input}
-          onChangeText={(text) => setSearch(text)}
+          onChangeText={(text) => searchFilter(text)}
           value={search}
           placeholder="Buscar"
           placeholderTextColor={"white"}
@@ -29,7 +40,7 @@ export const Searching = ({ data, visibility, setVisibility }) => {
           size={30}
           style={{ bottom: 15 }}
           onPress={() => {
-            search !== "" ? setSearch("") : setVisibility(true);
+            search !== "" ? setSearch("") : Keyboard.dismiss();
           }}
         />
       </View>
@@ -38,18 +49,21 @@ export const Searching = ({ data, visibility, setVisibility }) => {
         <View style={styles(search).requests}>
           <FlatList
             style={styles(search).list}
-            data={data}
-            keyExtractor={(x) => x.terminal}
+            data={filter.length === 0 ? data : filter}
+            keyExtractor={(x) => x.nombre}
             renderItem={({ item, index }) => {
               return (
                 <TouchableOpacity
                   style={styles(search).touchable}
-                  onPress={() => console.log("Hola")}
+                  onPress={() => {
+                    setSearch("");
+                    navigation.navigate("terminal", { item: item })
+                  }}
                 >
                   <Text
                     style={{ fontSize: 18, fontWeight: "bold", color: "white" }}
                   >
-                    {item.terminal}
+                    {item.nombre}
                   </Text>
                 </TouchableOpacity>
               );

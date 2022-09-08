@@ -1,3 +1,5 @@
 export { Maps } from "./map";
 export { Searching } from "./searching";
-export { ModalDirections } from "./Modal.jsx";
+export { Modal } from "./Modal";
+export { Markers } from "./Markers";
+export { default as Loading } from "./loading";

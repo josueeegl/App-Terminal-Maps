@@ -1,11 +1,15 @@
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
-import { HomeScreen, AuthLoading, BoardinScreen } from "./screens";
+import { HomeScreen, AuthLoading, BoardinScreen, TerminalScreen } from "./screens";
 
 const OnRootNavigator = createStackNavigator(
   {
     inicio: {
       screen: HomeScreen,
+      navigationOptions: { headerShown: false },
+    },
+    terminal: {
+      screen: TerminalScreen,
       navigationOptions: { headerShown: false },
     },
   },

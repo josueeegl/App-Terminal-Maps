@@ -1,4 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as local from "expo-location";
+
 export const obtener = async (setOrigin) => {
   const latitude = await AsyncStorage.getItem("latitude");
   const longitude = await AsyncStorage.getItem("longitude");
@@ -11,4 +13,20 @@ export const obtener = async (setOrigin) => {
   setOrigin(directions);
 
   return directions;
+};
+
+export const LocationUser = async (
+  setUserLocation,
+  UserLocation,
+  setRegion,
+  setLoader
+) => {
+  setUserLocation({
+    latitude: (await local.getCurrentPositionAsync()).coords.latitude,
+    longitude: (await local.getCurrentPositionAsync()).coords.longitude,
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.01,
+  });
+  setLoader(false);
+  setRegion(UserLocation);
 };
