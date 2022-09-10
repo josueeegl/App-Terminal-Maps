@@ -5,18 +5,22 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  FlatList, Keyboard
+  FlatList,
+  Keyboard,
 } from "react-native";
 import { IconButton } from "react-native-paper";
+import { points } from "../functions/location";
 
-export const Searching = ({ data, navigation }) => {
+export const Searching = ({ data, navigation, setRuta, setDest }) => {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState([]);
 
   const searchFilter = (text) => {
     setSearch(text);
     if (text !== "") {
-      const newData = data.filter((x) => x.nombre.toUpperCase().indexOf(text.toUpperCase()) > -1);
+      const newData = data.filter(
+        (x) => x.nombre.toUpperCase().indexOf(text.toUpperCase()) > -1
+      );
       setFilter(newData);
     } else {
       setFilter([]);
@@ -46,18 +50,23 @@ export const Searching = ({ data, navigation }) => {
       </View>
 
       {search !== "" ? (
-        <View style={styles(search).requests}>
           <FlatList
             style={styles(search).list}
             data={filter.length === 0 ? data : filter}
             keyExtractor={(x) => x.nombre}
             renderItem={({ item, index }) => {
+              const rutas = points(item.rutas);
               return (
                 <TouchableOpacity
                   style={styles(search).touchable}
                   onPress={() => {
                     setSearch("");
-                    navigation.navigate("terminal", { item: item })
+                    navigation.navigate("terminal", {
+                      item: item,
+                      setRuta: setRuta,
+                      setDest: setDest,
+                      rutas: rutas,
+                    });
                   }}
                 >
                   <Text
@@ -69,7 +78,6 @@ export const Searching = ({ data, navigation }) => {
               );
             }}
           />
-        </View>
       ) : null}
     </View>
   );
@@ -93,13 +101,14 @@ const styles = (search) =>
       borderTopRightRadius: 25,
       borderBottomLeftRadius: search == "" ? 25 : 0,
       borderBottomRightRadius: search == "" ? 25 : 0,
-      backgroundColor: "#393943",
+      backgroundColor: "#E98D58",
     },
     list: {
-      alignSelf: "stretch",
-      backgroundColor: "#eee",
+      backgroundColor: "transparent",
+      width: "90%",
       borderBottomLeftRadius: 25,
       borderBottomRightRadius: 25,
+      paddingBottom: 15,
     },
     input: {
       width: "85%",
@@ -107,13 +116,17 @@ const styles = (search) =>
       color: "white",
       fontWeight: "bold",
     },
-    requests: { backgroundColor: "#eee", width: "93%" },
+    requests: {
+      backgroundColor: "#eee",
+      width: "93%",
+      borderBottomLeftRadius: 25,
+      borderBottomRightRadius: 25,
+    },
     touchable: {
+      alignSelf: "center",
       width: "100%",
-      height: 70,
-      backgroundColor: "rgba(0, 0, 0, 0.6)",
+      height: 65,
+      backgroundColor: "rgba(0, 0, 0, 0.9)",
       padding: 10,
-      borderBottomWidth: 1,
-      borderColor: "#393943",
     },
   });

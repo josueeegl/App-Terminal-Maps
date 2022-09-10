@@ -30,3 +30,13 @@ export const LocationUser = async (
   setLoader(false);
   setRegion(UserLocation);
 };
+
+export const points = (rutas) => {
+  const nuevo = rutas.map((item) => {
+    return { longitude: item.point.longitud, latitude: item.point.latitud };
+  });
+  console.log(nuevo);
+  return nuevo;
+};
+
+

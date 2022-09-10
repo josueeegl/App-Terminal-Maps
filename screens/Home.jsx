@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TextInput, Alert } from "react-native";
-import { obtener, LocationUser } from "../functions/location";
+import { StyleSheet, Text, View } from "react-native";
+import { obtener, LocationUser, points } from "../functions/location";
 import { Searching, Maps, Loading } from "../components";
 import { IconButton } from "react-native-paper";
 import useFetch from "../hooks/useFetch";
 import { DOMINIO } from "@env";
 
 export const HomeScreen = ({ navigation }) => {
+  const [dest, setDest] = React.useState({});
   const [visibility, setVisibility] = useState(false);
   const [ruta, setRuta] = useState(false);
   const [loader, setLoader] = useState(false);
@@ -24,7 +25,7 @@ export const HomeScreen = ({ navigation }) => {
   });
   useEffect(() => {
     obtener(setUserLocation);
-    useFetch(DOMINIO, setLoader, setData);
+    useFetch(setLoader, setData);
   }, []);
 
   return (
@@ -34,6 +35,8 @@ export const HomeScreen = ({ navigation }) => {
         visibility={visibility}
         setVisibility={setVisibility}
         navigation={navigation}
+        setRuta={setRuta}
+        setDest={setDest}
       />
       <Maps
         data={Data}
@@ -43,6 +46,8 @@ export const HomeScreen = ({ navigation }) => {
         navigation={navigation}
         ruta={ruta}
         setRuta={setRuta}
+        dest={dest}
+        setDest={setDest}
       />
       <IconButton
         icon="map-marker-account"

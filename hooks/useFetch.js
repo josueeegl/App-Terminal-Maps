@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Alert } from "react-native";
 
-export default (url, setLoader, setData) => {
-  fetch(url, { method: "GET" })
+export default (setLoader, setData) => {
+  fetch("http://192.168.235.222:3000/terminales", { method: "GET" })
     .then(async (x) => {
       if (x.status == 200) {
         const data = await x.json();

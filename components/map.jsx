@@ -1,9 +1,11 @@
 import * as React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Appearance } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { GOOGLE_MAPS_KEY } from "@env";
 import LottieView from "lottie-react-native";
+import { points } from "../functions/location";
+import { mapstyle, mapstyleNight, mapstyleretro } from "../functions/mapstyles";
 
 export const Maps = ({
   data,
@@ -13,10 +15,20 @@ export const Maps = ({
   navigation,
   ruta,
   setRuta,
+  dest,
+  setDest,
 }) => {
-  const [dest, setDest] = React.useState({});
   return (
-    <MapView rotateEnabled={true} style={styles.mapa} initialRegion={region} region={region}>
+    <MapView
+      customMapStyle={
+        Appearance.getColorScheme() === "dark" ? mapstyleNight : mapstyleretro
+      }
+      userInterfaceStyle={"dark"}
+      rotateEnabled={true}
+      style={styles.mapa}
+      initialRegion={region}
+      region={region}
+    >
       <Marker
         coordinate={{
           latitude: UserLocation.latitude,
@@ -31,8 +43,10 @@ export const Maps = ({
         />
       </Marker>
       {data.map((item, index) => {
+        const rutas = points(item.rutas);
         return (
           <Marker
+            image={require("../assets/autobus4.png")}
             coordinate={{
               longitude: item.coordenadas.longitud,
               latitude: item.coordenadas.latitud,
@@ -43,16 +57,10 @@ export const Maps = ({
                 item: item,
                 setRuta: setRuta,
                 setDest: setDest,
+                rutas: rutas,
               });
             }}
-          >
-            <LottieView
-              source={require("../assets/icons/bus.json")}
-              autoPlay
-              loop
-              style={{ width: 90, height: 20 }}
-            />
-          </Marker>
+          />
         );
       })}
       {ruta ? (
@@ -61,7 +69,7 @@ export const Maps = ({
           destination={dest}
           apikey={GOOGLE_MAPS_KEY}
           strokeColor={"#01A2FD"}
-          strokeWidth={8}          
+          strokeWidth={8}
         />
       ) : null}
     </MapView>
