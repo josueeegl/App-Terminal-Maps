@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     width: "93%",
     height: "30%",
     bottom: -190,
-    borderRadius: 15,
+    borderRadius: 20
   },
   textIr: {
     margin: 0,
