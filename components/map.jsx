@@ -68,8 +68,8 @@ export const Maps = ({
           origin={UserLocation}
           destination={dest}
           apikey={GOOGLE_MAPS_KEY}
-          strokeColor={"#01A2FD"}
-          strokeWidth={8}
+          strokeColor={"#E66536"}
+          strokeWidth={10}
         />
       ) : null}
     </MapView>
