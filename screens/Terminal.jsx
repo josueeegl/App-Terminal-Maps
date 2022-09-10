@@ -43,23 +43,23 @@ export const TerminalScreen = ({ navigation }) => {
       <View
         style={{
           width: "93%",
-          marginTop: 20,
+          marginTop: 10,
           flexDirection: "row",
           justifyContent: "space-between",
           marginBottom: 50,
         }}
       >
-        <View style={{ top: 20 }}>
+        <View style={{ top: 40 }}>
           <Text style={styles.etiqueta}>Salida</Text>
           <Text style={styles.etiqueta2}>{item.nombre}</Text>
         </View>
         <LottieView
-          source={require("../assets/viaje2.json")}
+          source={require("../assets/viaje3.json")}
           autoPlay
           loop
           style={{ width: 100 }}
         />
-        <View style={{ top: 20 }}>
+        <View style={{ top: 40 }}>
           <Text style={styles.etiqueta}>Destino final</Text>
           <Text style={styles.etiqueta2}>{item.destino_final}</Text>
         </View>
