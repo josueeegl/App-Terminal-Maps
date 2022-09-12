@@ -12,6 +12,7 @@ export const HomeScreen = ({ navigation }) => {
   const [ruta, setRuta] = useState(false);
   const [loader, setLoader] = useState(false);
   const [Data, setData] = useState([]);
+  const [DataTime, setDataTime] = useState();
   const [UserLocation, setUserLocation] = useState({
     latitude: 14.252588,
     longitude: -89.873671,
@@ -48,10 +49,13 @@ export const HomeScreen = ({ navigation }) => {
         setRuta={setRuta}
         dest={dest}
         setDest={setDest}
+        setLoader={setLoader}
+        setDataTime={setDataTime}
+        DataTime={DataTime}
       />
       <IconButton
         icon="map-marker-account"
-        color="#E64A19"
+        color="#16A3B6"
         size={60}
         style={{ position: "absolute", right: -5, bottom: 10 }}
         onPress={() => {
@@ -59,14 +63,28 @@ export const HomeScreen = ({ navigation }) => {
           LocationUser(setUserLocation, UserLocation, setRegion, setLoader);
         }}
       />
-      {ruta ? (
-        <IconButton
-          icon="map-marker-off"
-          color="#01A2FD"
-          size={60}
-          style={{ position: "absolute", right: 50, bottom: 10 }}
-          onPress={() => setRuta(false)}
-        />
+      {ruta && DataTime !== undefined ? (
+        <>
+          <Text
+            style={{
+              position: "absolute",
+              right: 60,
+              bottom: 10,
+              color: "#4C4C4C",
+              fontSize: 16,
+              fontWeight: "bold",
+            }}
+          >
+            {DataTime["rows"][0]["elements"][0].distance.text}
+          </Text>
+          <IconButton
+            icon="map-marker-remove-variant"
+            color="#4C4C4C"
+            size={60}
+            style={{ position: "absolute", right: 50, bottom: 10 }}
+            onPress={() => setRuta(false)}
+          />
+        </>
       ) : null}
       {loader ? <Loading /> : null}
     </View>

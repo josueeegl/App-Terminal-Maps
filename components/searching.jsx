@@ -70,7 +70,7 @@ export const Searching = ({ data, navigation, setRuta, setDest }) => {
                   }}
                 >
                   <Text
-                    style={{ fontSize: 18, fontWeight: "bold", color: "white" }}
+                    style={{ fontSize: 18, fontWeight: "bold", color: "#4C4C4C" }}
                   >
                     {item.nombre}
                   </Text>
@@ -101,7 +101,7 @@ const styles = (search) =>
       borderTopRightRadius: 25,
       borderBottomLeftRadius: search == "" ? 25 : 0,
       borderBottomRightRadius: search == "" ? 25 : 0,
-      backgroundColor: "#E98D58",
+      backgroundColor: "#4C4C4C",
     },
     list: {
       backgroundColor: "transparent",
@@ -126,7 +126,7 @@ const styles = (search) =>
       alignSelf: "center",
       width: "100%",
       height: 65,
-      backgroundColor: "rgba(0, 0, 0, 0.9)",
+      backgroundColor: "white",
       padding: 10,
     },
   });

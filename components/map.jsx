@@ -5,7 +5,7 @@ import MapViewDirections from "react-native-maps-directions";
 import { GOOGLE_MAPS_KEY } from "@env";
 import LottieView from "lottie-react-native";
 import { points } from "../functions/location";
-import { mapstyle, mapstyleNight, mapstyleretro } from "../functions/mapstyles";
+import { MapGrey } from "../functions/mapstyles";
 
 export const Maps = ({
   data,
@@ -17,13 +17,13 @@ export const Maps = ({
   setRuta,
   dest,
   setDest,
+  setLoader,
+  setDataTime,
+  DataTime
 }) => {
   return (
     <MapView
-      customMapStyle={
-        Appearance.getColorScheme() === "dark" ? mapstyleNight : mapstyleretro
-      }
-      userInterfaceStyle={"dark"}
+      customMapStyle={MapGrey}
       rotateEnabled={true}
       style={styles.mapa}
       initialRegion={region}
@@ -58,6 +58,10 @@ export const Maps = ({
                 setRuta: setRuta,
                 setDest: setDest,
                 rutas: rutas,
+                UserLocation: `${UserLocation.latitude},${UserLocation.longitude}`,
+                setDataTime: setDataTime,
+                setLoader: setLoader,
+                DataTime: DataTime
               });
             }}
           />
@@ -68,8 +72,8 @@ export const Maps = ({
           origin={UserLocation}
           destination={dest}
           apikey={GOOGLE_MAPS_KEY}
-          strokeColor={"#E66536"}
-          strokeWidth={10}
+          strokeColor={"#4C4C4C"}
+          strokeWidth={6}
         />
       ) : null}
     </MapView>
