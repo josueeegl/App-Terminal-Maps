@@ -193,7 +193,7 @@ export const TerminalScreen = ({ navigation }) => {
           onPress={() => {
             fetchTime(
               setDataTime,
-              UserLocation,
+              `${UserLocation.latitude}, ${UserLocation.longitude}`,
               `${coordOrig.latitude}, ${coordOrig.longitude}`
             );
             setDest(coordOrig);

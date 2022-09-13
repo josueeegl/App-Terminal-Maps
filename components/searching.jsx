@@ -26,9 +26,28 @@ export const Searching = ({
     setSearch(text);
     if (text !== "") {
       const newData = data.filter(
-        (x) => x.nombre.toUpperCase().indexOf(text.toUpperCase()) > -1
+        (x) =>
+          x.nombre.toUpperCase().indexOf(text.toUpperCase()) > -1 ||
+          x.destino_final.toUpperCase().indexOf(text.toUpperCase()) > -1
       );
-      setFilter(newData);
+      if (newData.length === 0) {
+        let rt = [];
+        for (let i = 0; i < data.length; i++) {
+          for (let j = 0; j < data[i].rutas.length; j++) {
+            if (
+              data[i].rutas[j].nombre
+                .toUpperCase()
+                .indexOf(text.toUpperCase()) > -1
+            ) {
+              rt.push(data[i]);
+            }
+          }
+        }
+        setFilter(rt);
+        rt = [];
+      } else {
+        setFilter(newData);
+      }
     } else {
       setFilter([]);
     }
@@ -47,7 +66,7 @@ export const Searching = ({
         />
         <IconButton
           icon={search !== "" ? "backspace" : "text-search"}
-          color="white"
+          color={search == "" ? "white" : "#4C4C4C"}
           size={30}
           style={{ bottom: 15 }}
           onPress={() => {
@@ -60,7 +79,7 @@ export const Searching = ({
         <FlatList
           style={styles(search).list}
           data={filter.length === 0 ? data : filter}
-          keyExtractor={(x) => x.coordenadas.latitud}
+          keyExtractor={(x) => x._id + (Math.random() * (100 - 10) + 10)}
           renderItem={({ item, index }) => {
             const rutas = points(item.rutas);
             return (
@@ -79,20 +98,36 @@ export const Searching = ({
                 }}
               >
                 <Text
-                  style={{ fontSize: 14, fontWeight: "bold", color: "#4C4C4C" }}
+                  style={{ fontSize: 14, fontWeight: "bold", color: "white" }}
                 >
                   {item.destino_final}
                 </Text>
                 <Text
                   style={{
                     fontSize: 10,
-                    color: "#4C4C4C",
+                    color: "white",
                     opacity: 0.7,
                     fontWeight: "bold",
                   }}
                 >
                   Saliendo de {item.nombre}
                 </Text>
+                <FlatList
+                  style={{ width: "95%" }}
+                  horizontal
+                  data={rutas}
+                  ItemSeparatorComponent={() => {
+                    return <Text style={styles(search).paradas}>{">"}</Text>;
+                  }}
+                  keyExtractor={(x) => x.latitude}
+                  renderItem={(item2, index) => {
+                    return (
+                      <Text style={styles(search).paradas}>
+                        {item2.item.nombre}
+                      </Text>
+                    );
+                  }}
+                />
               </TouchableOpacity>
             );
           }}
@@ -107,33 +142,35 @@ const styles = (search) =>
     container: {
       position: "absolute",
       width: "100%",
-      top: 50,
+      top: 40,
       alignItems: "center",
       zIndex: 1,
     },
     viewSearch: {
       flexDirection: "row",
-      height: 50,
+      height: search == "" ? 50 : 60,
       width: "93%",
       padding: 15,
       borderTopLeftRadius: 25,
       borderTopRightRadius: 25,
       borderBottomLeftRadius: search == "" ? 25 : 0,
       borderBottomRightRadius: search == "" ? 25 : 0,
-      backgroundColor: "#4C4C4C",
+      borderBottomWidth: search == "" ? 0 : 1,
+      borderLeftWidth: search == "" ? 0 : 1,
+      borderRightWidth: search == "" ? 0 : 1,
+      borderColor: "rgba(0,0,0,0.2)",
+      backgroundColor: search == "" ? "#4C4C4C" : "white",
     },
     list: {
-      backgroundColor: "transparent",
+      backgroundColor: "#4C4C4C",
       width: "90%",
-      borderBottomLeftRadius: 25,
-      borderBottomRightRadius: 25,
       paddingBottom: 15,
-      height: 500,
+      maxHeight: 500,
     },
     input: {
       width: "85%",
       fontSize: 14,
-      color: "white",
+      color: search == "" ? "white" : "#4C4C4C",
       fontWeight: "bold",
     },
     requests: {
@@ -146,9 +183,17 @@ const styles = (search) =>
       alignSelf: "center",
       width: "100%",
       height: 100,
-      backgroundColor: "white",
-      padding: 10,
+      backgroundColor: "#4C4C4C",
       borderTopWidth: 1,
-      borderColor: "rgba(0,0,0,0.5)",
+      borderColor: "rgba(255,255,255,0.5)",
+      padding: 15,
+    },
+    paradas: {
+      fontSize: 10,
+      color: "white",
+      opacity: 0.7,
+      fontWeight: "bold",
+      marginRight: 15,
+      top: 5,
     },
   });
