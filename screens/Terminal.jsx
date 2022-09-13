@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, StatusBar } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { GOOGLE_MAPS_KEY } from "@env";
@@ -16,8 +16,6 @@ export const TerminalScreen = ({ navigation }) => {
   const setDest = navigation.getParam("setDest");
   const setRuta = navigation.getParam("setRuta");
   const setDataTime = navigation.getParam("setDataTime");
-  const DataTime = navigation.getParam("DataTime");
-  const setLoader = navigation.getParam("setLoader");
   const UserLocation = navigation.getParam("UserLocation");
   const coordDest = {
     longitude: item.coordenadas_destino.longitud,
@@ -37,7 +35,6 @@ export const TerminalScreen = ({ navigation }) => {
 
   React.useEffect(() => {
     fetchTime(
-      setLoader,
       setData,
       `${coordOrig.latitude}, ${coordOrig.longitude}`,
       `${coordDest.latitude}, ${coordDest.longitude}`
@@ -45,11 +42,11 @@ export const TerminalScreen = ({ navigation }) => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View
         style={{
           width: "93%",
-          marginTop: 30,
+          marginTop: StatusBar.currentHeight+5,
           backgroundColor: "#4C4C4C",
           padding: 5,
           borderRadius: 10,
@@ -86,7 +83,7 @@ export const TerminalScreen = ({ navigation }) => {
         <View>
           <Text style={styles.etiqueta}>Precio estimado</Text>
           <Text style={{ fontSize: 22, fontWeight: "bold", color: "#4C4C4C" }}>
-            Q {item.precio_estimado}
+            Q {item.precio_estimado}.00
           </Text>
         </View>
       </View>
@@ -99,19 +96,19 @@ export const TerminalScreen = ({ navigation }) => {
           width: "93%",
           marginTop: 5,
           flexDirection: "row",
-          justifyContent: "space-between",
+          justifyContent: "flex-start",
         }}
       >
         {Data !== undefined ? (
           <>
-            <View>
+            <View style={{marginRight: 15}}>
               <Text style={styles.etiqueta}>Distancia</Text>
               <Text style={styles.etiqueta2}>
                 {Data["rows"][0]["elements"][0].distance.text}
               </Text>
             </View>
             <View>
-              <Text style={styles.etiqueta}>Tiempo estimado</Text>
+              <Text style={styles.etiqueta}>Tiempo estimado de viaje</Text>
               <Text style={styles.etiqueta2}>
                 {Data["rows"][0]["elements"][0].duration.text}
               </Text>
@@ -125,10 +122,10 @@ export const TerminalScreen = ({ navigation }) => {
           marginTop: 10,
           flexDirection: "row",
           justifyContent: "space-between",
-          marginBottom: 50,
+          marginBottom: 25,
         }}
       >
-        <View style={{ top: 40 }}>
+        <View style={{ top: 30 }}>
           <Text style={styles.etiqueta}>Salida</Text>
           <Text style={styles.etiqueta2}>{item.nombre}</Text>
         </View>
@@ -138,7 +135,7 @@ export const TerminalScreen = ({ navigation }) => {
           loop
           style={{ width: 100 }}
         />
-        <View style={{ top: 40 }}>
+        <View style={{ top: 30 }}>
           <Text style={styles.etiqueta}>Destino</Text>
           <Text style={styles.etiqueta2}>{item.destino_final}</Text>
         </View>
@@ -154,6 +151,8 @@ export const TerminalScreen = ({ navigation }) => {
         }}
         onPress={clickMap}
         scrollEnabled={false}
+        zoomEnabled={false}
+        rotateEnabled={false}
       >
         <Marker
           coordinate={coordOrig}
@@ -170,7 +169,7 @@ export const TerminalScreen = ({ navigation }) => {
           destination={coordDest}
           apikey={GOOGLE_MAPS_KEY}
           strokeColor={"#4C4C4C"}
-          strokeWidth={6}
+          strokeWidth={8}
           waypoints={rutas}
         />
 
@@ -193,7 +192,6 @@ export const TerminalScreen = ({ navigation }) => {
           style={styles.touchable}
           onPress={() => {
             fetchTime(
-              setLoader,
               setDataTime,
               UserLocation,
               `${coordOrig.latitude}, ${coordOrig.longitude}`
@@ -207,7 +205,7 @@ export const TerminalScreen = ({ navigation }) => {
           <IconButton icon="map-marker-path" color="#4C4C4C" size={35} />
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -246,7 +244,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "white",
-    fontSize: 34,
+    fontSize: 24,
     fontWeight: "bold",
   },
   etiqueta: {
@@ -254,11 +252,13 @@ const styles = StyleSheet.create({
     fontSize: 10,
     opacity: 0.5,
     fontWeight: "bold",
+    
   },
   etiqueta2: {
     color: "#4C4C4C",
     fontSize: 14,
     fontWeight: "bold",
     marginBottom: 15,
+    maxWidth: 150
   },
 });

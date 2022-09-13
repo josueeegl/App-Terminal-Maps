@@ -1,12 +1,17 @@
 import * as React from "react";
-import { StyleSheet, Text, View, Appearance } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import { StyleSheet, Text, View, Appearance, Image } from "react-native";
+import MapView, { Marker, Callout } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { GOOGLE_MAPS_KEY } from "@env";
 import { IconButton } from "react-native-paper";
 import LottieView from "lottie-react-native";
 import { points } from "../functions/location";
-import { mapstyle, mapstyleNight, mapstyleretro, MapGrey } from "../functions/mapstyles";
+import {
+  mapstyle,
+  mapstyleNight,
+  mapstyleretro,
+  MapGrey,
+} from "../functions/mapstyles";
 
 export const MapRuta = ({ navigation }) => {
   const item = navigation.getParam("item");
@@ -28,14 +33,21 @@ export const MapRuta = ({ navigation }) => {
         <Marker
           coordinate={coordOrig}
           image={require("../assets/autobus4.png")}
+          title={item.nombre}
+          description={"Terminal"}
         />
-        <Marker coordinate={coordDest} image={require("../assets/fin.png")} />
+        <Marker
+          coordinate={coordDest}
+          image={require("../assets/fin.png")}
+          title={item.destino_final}
+          description={"Destino final"}
+        />
         <MapViewDirections
           origin={coordOrig}
           destination={coordDest}
           apikey={GOOGLE_MAPS_KEY}
           strokeColor={"#4C4C4C"}
-          strokeWidth={6}
+          strokeWidth={8}
           waypoints={rutas}
         />
 
@@ -48,6 +60,8 @@ export const MapRuta = ({ navigation }) => {
               }}
               key={index}
               image={require("../assets/bus-stop3.png")}
+              title={item.nombre}
+              description={"Parada - Recolección de pasajeros"}
             />
           );
         })}
@@ -68,5 +82,21 @@ const styles = StyleSheet.create({
   mapa: {
     width: "100%",
     height: "100%",
+  },
+  arrow: {
+    backgroundColor: "transparent",
+    borderColor: "transparent",
+    borderTopColor: "#fff",
+    borderWidth: 16,
+    alignSelf: "center",
+    marginTop: -32,
+  },
+  arrowBorder: {
+    backgroundColor: "transparent",
+    borderColor: "transparent",
+    borderTopColor: "#fff",
+    borderWidth: 16,
+    alignSelf: "center",
+    marginTop: -0.5,
   },
 });

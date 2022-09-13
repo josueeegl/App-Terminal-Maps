@@ -11,7 +11,14 @@ import {
 import { IconButton } from "react-native-paper";
 import { points } from "../functions/location";
 
-export const Searching = ({ data, navigation, setRuta, setDest }) => {
+export const Searching = ({
+  data,
+  navigation,
+  setRuta,
+  setDest,
+  setDataTime,
+  UserLocation,
+}) => {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState([]);
 
@@ -50,34 +57,46 @@ export const Searching = ({ data, navigation, setRuta, setDest }) => {
       </View>
 
       {search !== "" ? (
-          <FlatList
-            style={styles(search).list}
-            data={filter.length === 0 ? data : filter}
-            keyExtractor={(x) => x.nombre}
-            renderItem={({ item, index }) => {
-              const rutas = points(item.rutas);
-              return (
-                <TouchableOpacity
-                  style={styles(search).touchable}
-                  onPress={() => {
-                    setSearch("");
-                    navigation.navigate("terminal", {
-                      item: item,
-                      setRuta: setRuta,
-                      setDest: setDest,
-                      rutas: rutas,
-                    });
+        <FlatList
+          style={styles(search).list}
+          data={filter.length === 0 ? data : filter}
+          keyExtractor={(x) => x.coordenadas.latitud}
+          renderItem={({ item, index }) => {
+            const rutas = points(item.rutas);
+            return (
+              <TouchableOpacity
+                style={styles(search).touchable}
+                onPress={() => {
+                  setSearch("");
+                  navigation.navigate("terminal", {
+                    item: item,
+                    setRuta: setRuta,
+                    setDest: setDest,
+                    rutas: rutas,
+                    UserLocation: UserLocation,
+                    setDataTime: setDataTime,
+                  });
+                }}
+              >
+                <Text
+                  style={{ fontSize: 14, fontWeight: "bold", color: "#4C4C4C" }}
+                >
+                  {item.destino_final}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    color: "#4C4C4C",
+                    opacity: 0.7,
+                    fontWeight: "bold",
                   }}
                 >
-                  <Text
-                    style={{ fontSize: 18, fontWeight: "bold", color: "#4C4C4C" }}
-                  >
-                    {item.nombre}
-                  </Text>
-                </TouchableOpacity>
-              );
-            }}
-          />
+                  Saliendo de {item.nombre}
+                </Text>
+              </TouchableOpacity>
+            );
+          }}
+        />
       ) : null}
     </View>
   );
@@ -109,6 +128,7 @@ const styles = (search) =>
       borderBottomLeftRadius: 25,
       borderBottomRightRadius: 25,
       paddingBottom: 15,
+      height: 500,
     },
     input: {
       width: "85%",
@@ -125,8 +145,10 @@ const styles = (search) =>
     touchable: {
       alignSelf: "center",
       width: "100%",
-      height: 65,
+      height: 100,
       backgroundColor: "white",
       padding: 10,
+      borderTopWidth: 1,
+      borderColor: "rgba(0,0,0,0.5)",
     },
   });

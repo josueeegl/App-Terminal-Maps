@@ -38,10 +38,11 @@ export const HomeScreen = ({ navigation }) => {
         navigation={navigation}
         setRuta={setRuta}
         setDest={setDest}
+        UserLocation={UserLocation}
+        setDataTime={setDataTime}
       />
       <Maps
         data={Data}
-        setRegion={setRegion}
         region={region}
         UserLocation={UserLocation}
         navigation={navigation}
@@ -49,7 +50,6 @@ export const HomeScreen = ({ navigation }) => {
         setRuta={setRuta}
         dest={dest}
         setDest={setDest}
-        setLoader={setLoader}
         setDataTime={setDataTime}
         DataTime={DataTime}
       />

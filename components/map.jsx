@@ -9,7 +9,6 @@ import { MapGrey } from "../functions/mapstyles";
 
 export const Maps = ({
   data,
-  setRegion,
   region,
   UserLocation,
   navigation,
@@ -17,7 +16,6 @@ export const Maps = ({
   setRuta,
   dest,
   setDest,
-  setLoader,
   setDataTime,
   DataTime
 }) => {
@@ -43,7 +41,7 @@ export const Maps = ({
         />
       </Marker>
       {data.map((item, index) => {
-        const rutas = points(item.rutas);
+        const rutas = points(item.rutas); 
         return (
           <Marker
             image={require("../assets/autobus4.png")}
@@ -51,6 +49,7 @@ export const Maps = ({
               longitude: item.coordenadas.longitud,
               latitude: item.coordenadas.latitud,
             }}
+            title={item.nombre}
             key={index}
             onPress={() => {
               navigation.navigate("terminal", {
@@ -60,7 +59,6 @@ export const Maps = ({
                 rutas: rutas,
                 UserLocation: `${UserLocation.latitude},${UserLocation.longitude}`,
                 setDataTime: setDataTime,
-                setLoader: setLoader,
                 DataTime: DataTime
               });
             }}
@@ -73,7 +71,7 @@ export const Maps = ({
           destination={dest}
           apikey={GOOGLE_MAPS_KEY}
           strokeColor={"#4C4C4C"}
-          strokeWidth={6}
+          strokeWidth={8}
         />
       ) : null}
     </MapView>

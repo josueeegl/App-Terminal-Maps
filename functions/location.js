@@ -33,9 +33,8 @@ export const LocationUser = async (
 
 export const points = (rutas) => {
   const nuevo = rutas.map((item) => {
-    return { longitude: item.point.longitud, latitude: item.point.latitud };
+    return { longitude: item.point.longitud, latitude: item.point.latitud, nombre: item.nombre };
   });
-  console.log(nuevo);
   return nuevo;
 };
 
