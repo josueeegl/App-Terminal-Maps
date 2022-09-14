@@ -26,6 +26,7 @@ export const Maps = ({
       style={styles.mapa}
       initialRegion={region}
       region={region}
+      provider={"google"}
     >
       <Marker
         coordinate={{
@@ -57,7 +58,7 @@ export const Maps = ({
                 setRuta: setRuta,
                 setDest: setDest,
                 rutas: rutas,
-                UserLocation: `${UserLocation.latitude},${UserLocation.longitude}`,
+                UserLocation: UserLocation,
                 setDataTime: setDataTime,
                 DataTime: DataTime
               });

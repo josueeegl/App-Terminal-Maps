@@ -29,6 +29,7 @@ export const MapRuta = ({ navigation }) => {
           longitudeDelta: 0.05,
           latitudeDelta: 0.05,
         }}
+        provider={"google"}
       >
         <Marker
           coordinate={coordOrig}

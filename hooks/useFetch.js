@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Alert } from "react-native";
 
 export default (setLoader, setData) => {
-  fetch("http://192.168.115.222:3000/terminales", { method: "GET" })
+  fetch("https://terminalmaps.herokuapp.com/terminales", { method: "GET" })
     .then(async (x) => {
       if (x.status == 200) {
         const data = await x.json();

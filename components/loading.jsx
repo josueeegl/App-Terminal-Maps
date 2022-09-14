@@ -5,7 +5,12 @@ import LottieView from "lottie-react-native";
 export default () => {
   return (
     <View style={[StyleSheet.absoluteFillObject, styles.container]}>
-      <ActivityIndicator size={100} />
+      <LottieView
+        source={require("../assets/loading3.json")}
+        autoPlay
+        loop
+        style={{ width: 100, height: 100 }}
+      />
       <Text style={styles.text}>Obteniendo tu ubicación...</Text>
     </View>
   );
@@ -18,8 +23,8 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   text: {
-    size: 26,
-    color: "#01A2FD",
+    size: 36,
+    color: "#4C4C4C",
     fontWeight:"bold"
   }
 });
