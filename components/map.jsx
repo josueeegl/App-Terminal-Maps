@@ -26,7 +26,6 @@ export const Maps = ({
       style={styles.mapa}
       initialRegion={region}
       region={region}
-      provider={"google"}
     >
       <Marker
         coordinate={{

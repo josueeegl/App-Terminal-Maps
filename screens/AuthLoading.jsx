@@ -13,7 +13,8 @@ export const AuthLoading = ({ navigation }) => {
 
   const getLocation = async () => {
     local.requestForegroundPermissionsAsync().then(({ status }) => {
-      if (status !== "granted") {
+      console.log(status)
+      if (status.toUpperCase() === "DENIED") {
         navigation.navigate("OnBoarding");
       } else {
         local.getCurrentPositionAsync().then((location) => {

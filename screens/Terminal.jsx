@@ -153,7 +153,6 @@ export const TerminalScreen = ({ navigation }) => {
         scrollEnabled={false}
         zoomEnabled={false}
         rotateEnabled={false}
-        provider={"google"}
       >
         <Marker
           coordinate={coordOrig}
